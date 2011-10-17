@@ -199,7 +199,7 @@ This means that any code which is queued up waiting for DOM-ready to occur never
 
 So, if you load such a script dynamically with $script.js, and you have optimized the rest of your page in such a way that DOM-ready happens before that script gets there, then your page will be left in an uninitialized state because DOM-ready will have passed and will not fire a second time.
 
-jQuery 1.3.2 and below suffers from this problem, as do some others. However, a bug was filed with jQuery about this, and a fix has been put in for jQuery 1.4. So jQuery 1.4+ will be fine to load with $script.js. But 1.3.2 and below should not be loaded with $script.js because of this race condition between script loading and the actual DOM-ready event.
+jQuery 1.3.2 and below suffers from this problem, as do some others. However, a bug was filed with jQuery about this, and a fix was released in jQuery 1.4. So jQuery 1.4 and above are fine to load with $script.js. But 1.3.2 and below should not be loaded with $script.js because of this race condition between script loading and the actual DOM-ready event.
 
 There are two simple fixes to this issue, though:  
 
