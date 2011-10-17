@@ -188,7 +188,8 @@ When not to use $script.js
 
 **document.write()**
 
-Don't use $script.js with scripts that have document.write() in them. At least not yet. document.write() is natively synchronous and thus will break with the asynchronous loading techniques inherent to $script.js. 
+Don't use $script.js with scripts that have document.write() in them.   
+document.write() statements are not supported since it’s hard or impossible to know where to write to. It’s a bad programming habit anyway so avoid it.
 
 **Certain frameworks which have unsafe DOM-ready detection**
 
