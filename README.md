@@ -70,13 +70,10 @@ $script( [s1, s2], "mybundle", callback );
 ```
 
 
-### $script.ready()
+### $script.ready( names, readyCallback [, errorCallback] )
 
 Description: to-do  
-Contents:  
 
-**$script( names, readyCallback [, errorCallback] )**
-  
 names: A string or an array of strings containing the unique names that identify the scripts.  
 readyCallback: A function to execute when the specified scripts are loaded.  
 errorCallback: A function to execute when some scripts failed to load for some reason. This callback will be passed as argument an array of paths of those scripts that failed to load.  
