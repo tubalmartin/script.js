@@ -3,6 +3,8 @@
   * https://github.com/ded/script.js
   * (c) Dustin Diaz, Jacob Thornton 2011
   * License: MIT
+  * This is a forked version by Tubal Martin
+  * https://github.com/tubalmartin/script.js
   */
 !function (name, definition) {
   if (typeof define == 'function') define(definition)
