@@ -115,7 +115,7 @@ $script.ready( "myscript", callback )
 
 ``` js
 var myScripts = {
-        "myscript": "https://example.com/myscript1.js",
+        "myscript": "https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js",
         "myscript2": "non_existing_script.js"
     },
     
@@ -123,34 +123,35 @@ var myScripts = {
        console.log("My scripts are loaded but some may have not been found (404 Network error).");
     },
     
+    // If any script failed to load you can try to load all of them again or throw an error
     errorCallback = function( aNames ) {
        console.log("errorCallback called");
-       // If any script failed to load you can try to load all of them again or throw an error
        loadMyScripts( myScripts );
     },
     
+    // Wrapper function to load scripts with retry/error system
     loadMyScripts = (function(){
-		var retries = 0;
-		return function( oScripts ){
-		   var i = 0, name, scriptNames = [];  
-		   // If we've tried 2 times to load the scripts and some still fail throw error.
-		   if ( retries > 1 ) {
-			   throw new Error("ERROR: Some script paths/urls are wrong!!");  
-		   }
-		   // Load scripts 
-		   for ( name in oScripts ) {
-		   	   scriptNames[i] = name;
-		   	   $script( oScripts[ name ], name );
-			   ++i;
-		   }
-		   // Increment counter of retries
-		   ++retries;
-		   // Attach handler
-		   $script.ready( scriptNames, callback, errorCallback);
-		};
-	}());
+	var retries = 0;
+	return function( oScripts ){
+	   var i = 0, name, scriptNames = [];  
+	   // If we've tried 2 times to load the scripts and some still fail throw error.
+	   if ( retries > 1 ) {
+	       throw new Error("ERROR: Some script paths/urls are wrong!!");  
+	   }
+	   // Load scripts individually
+	   for ( name in oScripts ) {
+   	       scriptNames[i] = name;
+   	       $script( oScripts[ name ], name );
+	       ++i;
+	   }
+	   // Increment counter of retries
+	   ++retries;
+	   // Attach handler to all my scripts. When all scripts are ready execute callback but
+	   // if any of them fails to load handle the error.
+	   $script.ready( scriptNames, callback, errorCallback);
+	};
+    }());
 
-// Wrapper function to load scripts with retry/error system
 loadMyScripts( myScripts );
 ```
 
