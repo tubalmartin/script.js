@@ -4,7 +4,7 @@
   else this[name] = definition()
 }('$script', function() {
   var win = this, doc = document
-    , head = doc.getElementsByTagName('head')[0]
+    , script = 'script', scriptNode = doc.getElementsByTagName(script)[0]
     , validBase = /^https?:\/\//
     , old = win.$script, list = {}, ids = {}, delay = {}, scriptpath
     , scripts = {}, s = 'string', f = false
@@ -62,18 +62,20 @@
   }
 
   function create(path, fn) {
-    var el = doc.createElement('script')
+    var el = doc.createElement(script)
       , loaded = f
     el.onload = el.onerror = el[onreadystatechange] = function () {
       if ((el[readyState] && !(/^c|loade/.test(el[readyState]))) || loaded) return;
-      el.onload = el[onreadystatechange] = null
+      el.onload = el.onerror = el[onreadystatechange] = null
+      el = undefined // Dereference the script
       loaded = 1
       scripts[path] = 2
       fn()
     }
+    el.type = "text/javascript"
     el.async = 1
     el.src = path
-    head.insertBefore(el, head.firstChild)
+    scriptNode.parentNode.insertBefore(el, scriptNode)
   }
 
   $script.get = create
@@ -89,6 +91,7 @@
   $script.path = function(p) {
     scriptpath = p
   }
+
   $script.ready = function(deps, ready, req) {
     deps = deps[push] ? deps : [deps]
     var missing = [];
@@ -109,4 +112,4 @@
   }
 
   return $script
-})
+});
