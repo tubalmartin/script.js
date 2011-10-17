@@ -33,13 +33,13 @@ paths: A string or an array of strings containing the path to the script.
 readyCallback: A function to execute when the specified scripts are loaded.  
 
 ``` js
+var s1 = "https://example.com/myscript1.js",
+    s2 = "../myscript2.js";
+
 // Load just one script asynchronously if it's supported
 $script( "http://example.com/myscript.js" );
 
-// Load two scripts in one declaration and execute the callback when both are ready to be used
-var s1 = "https://example.com/myscript1.js",
-    s2 = "../myscript2.js";
-    
+// Load two scripts in one declaration and execute the callback when both are ready to be used 
 $script( [s1, s2], function() {
     // scripts are already loaded, parsed and executed
     // do something...
@@ -53,20 +53,19 @@ name: A string containing a unique name to indentify the script or bundle in `$s
 readyCallback: A function to execute when the specified scripts are loaded.  
 
 ``` js
-// A callback function
-var callback = function() {
-    console.log("scripts loaded!!");   
-};
+var s  = "http://example.com/myscript.js",
+    s1 = "https://example.com/myscript1.js",
+    s2 = "../myscript2.js",
+    callback = function() {
+        console.log("scripts loaded!!");   
+    };
 
 // Load just one script asynchronously if it's supported, give it a name & 
 // execute my callback function when scripts are ready
-$script( "http://example.com/myscript.js", "myscript", callback );
+$script( s, "myscript", callback );
 
 // Load two scripts in one declaration, give the bundle a name &
 // execute my callback function when both scripts are ready
-var s1 = "https://example.com/myscript1.js",
-    s2 = "../myscript2.js";
-    
 $script( [s1, s2], "mybundle", callback );
 ```
 
