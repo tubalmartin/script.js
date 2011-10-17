@@ -122,29 +122,31 @@ var myScripts = {
     },
     
     errorCallback = function( aNames ) {
+       console.log("errorCallback called");
        // If any script failed to load you can try to load all of them again or throw an error
        loadMyScripts( myScripts );
     },
     
-    loadMyScripts = (function(oScripts){
-        var retries = 0;
-        return function(){
-           var name;  
-           // If we've tried 2 times to load the scripts and some still fail throw error.
-           if ( retries > 1 ) {
-               throw new Error("ERROR: Some script paths/urls are wrong!!");  
-           }
-           // Load scripts
-           for ( name in oScripts ) {
-               $script( oScripts[ name ], name );
-           }
-           ++retries;
-        };
-    }());
-
-// The script names "myscript1" & "my-non-existing-script" are not set yet but
-// we can attach a handler to them right now.
-$script.ready( [ "myscript", "myscript2" ], callback, errorCallback);
+    loadMyScripts = (function(){
+		var retries = 0;
+		return function( oScripts ){
+		   var i = 0, name, scriptNames = [];  
+		   // If we've tried 2 times to load the scripts and some still fail throw error.
+		   if ( retries > 1 ) {
+			   throw new Error("ERROR: Some script paths/urls are wrong!!");  
+		   }
+		   // Load scripts 
+		   for ( name in oScripts ) {
+		   	   scriptNames[i] = name;
+		   	   $script( oScripts[ name ], name );
+			   ++i;
+		   }
+		   // Increment counter of retries
+		   ++retries;
+		   // Attach handler
+		   $script.ready( scriptNames, callback, errorCallback);
+		};
+	}());
 
 // Wrapper function to load scripts with retry/error system
 loadMyScripts( myScripts );
