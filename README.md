@@ -24,13 +24,19 @@ API
 
 ### $script()
 
-Description: Loads a script asynchronously if the browser supports async loading of scripts. Execution order of scripts is not guaranteed.  
-Contents:  
+*Description:*   
+- Loads a script asynchronously if the browser supports async loading of scripts. Execution order of scripts is not guaranteed.  
+
+*Returns*   
+`$script` object
+
+*Contents:*  
 
 **$script( paths [, readyCallback ] )**
-  
-paths: A string or an array of strings containing the path to the script.  
-readyCallback: A function to execute when the specified scripts are loaded.  
+
+*Arguments*  
+- paths: A string or an array of strings containing the path to the script.  
+- readyCallback: A function to execute when the specified scripts are loaded.  
 
 ``` js
 var s1 = "https://example.com/myscript1.js",
@@ -47,10 +53,11 @@ $script( [s1, s2], function() {
 ```
   
 **$script( paths, name [, readyCallback ] )**
-  
-paths: A string or an array of strings containing the path to the script.  
-name: A string containing a unique name to indentify the script or bundle in `$script.ready()`.  
-readyCallback: A function to execute when the specified scripts are loaded.  
+
+*Arguments*  
+- paths: A string or an array of strings containing the path to the script.    
+- name: A string containing a unique name to indentify the script or bundle in `$script.ready()`.    
+- readyCallback: A function to execute when the specified scripts are loaded.  
 
 ``` js
 var s  = "http://example.com/myscript.js",
@@ -73,18 +80,18 @@ $script( [s1, s2], "mybundle", callback );
 ### $script.ready( names, readyCallback [, errorCallback] )
 
 *Description*   
-- Attaches a handler to "onload" and "onreadystatechange" events for the specified script names.
-- This handler will execute when the specified scripts are loaded.
-- You can have multiple calls to `$script.ready()` for the same dependency (script name).
-- You can call `$script.ready()` anywhere in your code even if a script "name" has not been set yet.
+- Attaches a handler to "onload" and "onreadystatechange" events for the specified script names.  
+- This handler will execute when the specified scripts are loaded.  
+- You can have multiple calls to `$script.ready()` for the same dependency (script name).  
+- You can call `$script.ready()` anywhere in your code even if a script "name" has not been set yet.  
 
 *Returns*   
 `$script` object
 
 *Arguments*  
-- names: A string or an array of strings containing the unique names that identify the scripts.  
-- readyCallback: A function to execute when the specified scripts are loaded.  
-- errorCallback: A function to execute when any script failed to load for some reason (usually a wrong script path/url causing a 404 Not Found network error). An array of names will be passed to the first argument of the callback (note that all names will be passed, not only those of the scripts that failed to load).
+- names: A string or an array of strings containing the unique names that identify the scripts.    
+- readyCallback: A function to execute when the specified scripts are loaded.    
+- errorCallback: A function to execute when any script failed to load for some reason (usually a wrong script path/url causing a 404 Not Found network error).  An array of names will be passed to the first argument of the callback (note that all names will be passed, not only those of the scripts that failed to load).
 
 ``` js
 var s  = "http://example.com/myscript.js",
