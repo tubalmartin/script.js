@@ -93,7 +93,11 @@ $script( [s1, s2], "mybundle", callback );
 *Arguments*  
 - names: A string or an array of strings containing the unique names that identify the scripts.    
 - readyCallback: A function to execute when the specified scripts are loaded.    
-- missingCallback: A function to execute when a specified script is missing or, more technically, not internally registered as requested (to be loaded).  An array of script names will be passed to the first argument of the callback (note that all names will be passed, not only those of the scripts that are not registered yet).
+- missingCallback: A function to execute when a specified script is missing or, more technically, not internally registered as requested (to be loaded).    
+                   An array of script names will be passed to the first argument of the callback.  
+                   Notes:   
+                      - All names will be passed, not only those of the scripts that are not registered yet.
+                      - This library expects scripts' paths/urls to be valid (no 404/filesystem errors). 
 
 ``` js
 var s  = "http://example.com/myscript.js",
