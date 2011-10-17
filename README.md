@@ -23,13 +23,13 @@ API
 
 ### $script()
 
-Description: Loads a script asynchronously if the browser supports async loading of scripts. Execution order of scripts is not guaranteed.
-Contents:
+Description: Loads a script asynchronously if the browser supports async loading of scripts. Execution order of scripts is not guaranteed.  
+Contents:  
 
-*$script( paths [, readyCallback ] )*
+**$script( paths [, readyCallback ] )**
   
-paths: A string or an array of strings containing the path to the script.
-readyCallback: A function to execute when the specified scripts are loaded.
+paths: A string or an array of strings containing the path to the script.  
+readyCallback: A function to execute when the specified scripts are loaded.  
 
 ``` js
 // Load just one script asynchronously if it's supported
@@ -45,11 +45,11 @@ $script( [s1, s2], function() {
 } );
 ```
   
-*$script( paths, name [, readyCallback ] )*
+**$script( paths, name [, readyCallback ] )**
   
-paths: A string or an array of strings containing the path to the script.
-name: A string containing a unique name to indentify the script or bundle in `$script.ready()`.
-readyCallback: A function to execute when the specified scripts are loaded.
+paths: A string or an array of strings containing the path to the script.  
+name: A string containing a unique name to indentify the script or bundle in `$script.ready()`.  
+readyCallback: A function to execute when the specified scripts are loaded.  
 
 ``` js
 // A callback function
@@ -72,14 +72,14 @@ $script( [s1, s2], "mybundle", callback );
 
 ### $script.ready()
 
-Description: to-do
-Contents:
+Description: to-do  
+Contents:  
 
-*$script( names, readyCallback [, errorCallback] )*
+**$script( names, readyCallback [, errorCallback] )**
   
-names: A string or an array of strings containing the unique names that identify the scripts.
-readyCallback: A function to execute when the specified scripts are loaded.
-errorCallback: A function to execute when some scripts failed to load for some reason. This callback will be passed as argument an array of paths of those scripts that failed to load.
+names: A string or an array of strings containing the unique names that identify the scripts.  
+readyCallback: A function to execute when the specified scripts are loaded.  
+errorCallback: A function to execute when some scripts failed to load for some reason. This callback will be passed as argument an array of paths of those scripts that failed to load.  
 
 to-do
 
