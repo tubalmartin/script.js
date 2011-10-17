@@ -5,7 +5,8 @@ $script.js - Async JavaScript loader and dependency manager
 
 Features
 --------
-* Asynchronous & synchronous loading of scripts
+* Asynchronous loading of scripts
+* Possibility to specify execution order of scripts
 * Avoids duplicate downloads of scripts already requested/downloaded
 * Powerful dependency management system
 * No-conflict mode (like jQuery's)
