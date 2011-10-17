@@ -204,7 +204,7 @@ jQuery 1.3.2 and below suffers from this problem, as do some others. However, a 
 There are two simple fixes to this issue, though:  
 
 * Option 1) Simply load ONLY the jquery.js (1.3.2 and below) script file (or whatever other script that has its own unsafe DOM-ready detection logic in it) manually, using a regular script tag. This will guarantee that its internal DOM-ready detection will occur correctly, since the script tag you load it with will block DOM-ready for it to load first. Once jQuery has registered DOM-ready, all other plugins and blocks of $(document.ready(function(){...}); that queue for the DOM-ready event will work fine, even though you load them with $script.js.  
-* Option 2) Place a "bootstrap" script (one that contains $script.js and loads all your scripts) manually, using a regular script tag, just before the closing </body> tag (bottom of body). This way you know that by the time your scripts load, the DOM will be ready.
+* Option 2) Place a "bootstrap" script (one that contains $script.js and loads all your scripts) manually, using a regular script tag, just before the closing body tag (bottom of body). This way you know that by the time your scripts load, the DOM will be ready.
 
 
 Examples
