@@ -82,6 +82,11 @@ errorCallback: A function to execute when some scripts failed to load for some r
 to-do
 
 
+### $script.get()
+
+to-do
+
+
 ### $script.order()
 
 to-do
