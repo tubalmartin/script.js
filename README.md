@@ -236,8 +236,7 @@ $script.ready('bundle', function() {
 })
 ```
 
-Exhaustive list of ways to use $script.js
------------------------------------------
+List of ways to use $script.js
 
 ``` js
 $script('foo.js', function() {
