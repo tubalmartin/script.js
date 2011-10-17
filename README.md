@@ -8,7 +8,8 @@ Features
 * Asynchronous & synchronous loading of scripts
 * Flexible dependency management system
 * No conflict mode (like jQuery's)
-* No browser/javascript hacks. This guarantees your website/webapp won't break after browser updates/upgrades. 
+* No browser/javascript hacks. This guarantees your website/webapp won't break after browser updates/upgrades.
+* Super lightweight: 1.659 kb minified.
 
 Browser Support
 ---------------
