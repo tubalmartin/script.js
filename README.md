@@ -112,15 +112,20 @@ $script.ready( "myscript", callback )
 ```       
 
 ``` js
-var s1 = "https://example.com/myscript1.js",
-    sE = "non_existing_script.js",
+var myScripts = {
+        "myscript": "https://example.com/myscript1.js",
+        "myscript2": "non_existing_script.js"
+    },
+    
     callback = function() {
        console.log("My scripts are loaded but some may have not been found (404 Network error).");
     },
+    
     errorCallback = function( aNames ) {
        // If any script failed to load you can try to load all of them again or throw an error
-       loadMyScripts();
+       loadMyScripts( myScripts );
     },
+    
     loadMyScripts = (function(oScripts){
         var retries = 0;
         return function(){
@@ -130,8 +135,8 @@ var s1 = "https://example.com/myscript1.js",
                throw new Error("ERROR: Some script paths/urls are wrong!!");  
            }
            // Load scripts
-           for ( name in oScripts) {
-               $script( oScripts[name], name );
+           for ( name in oScripts ) {
+               $script( oScripts[ name ], name );
            }
            ++retries;
         };
@@ -139,13 +144,10 @@ var s1 = "https://example.com/myscript1.js",
 
 // The script names "myscript1" & "my-non-existing-script" are not set yet but
 // we can attach a handler to them right now.
-$script.ready( [ "myscript1", "my-non-existing-script" ], callback, errorCallback);
+$script.ready( [ "myscript", "myscript2" ], callback, errorCallback);
 
 // Wrapper function to load scripts with retry/error system
-loadMyScripts({
-    "myscript1": s1,
-    "my-non-existing-script": sE
-});
+loadMyScripts( myScripts );
 ```
 
 
