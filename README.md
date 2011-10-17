@@ -79,7 +79,7 @@ $script( [s1, s2], "mybundle", callback );
 ```
 
 
-### $script.ready( names, readyCallback [, errorCallback] )
+### $script.ready( names, readyCallback [, missingCallback] )
 
 *Description*   
 - Attaches a handler to "onload" and "onreadystatechange" events for the specified script names.  
@@ -93,7 +93,7 @@ $script( [s1, s2], "mybundle", callback );
 *Arguments*  
 - names: A string or an array of strings containing the unique names that identify the scripts.    
 - readyCallback: A function to execute when the specified scripts are loaded.    
-- errorCallback: A function to execute when any script failed to load for some reason (usually a wrong script path/url causing a 404 Not Found network error).  An array of names will be passed to the first argument of the callback (note that all names will be passed, not only those of the scripts that failed to load).
+- missingCallback: A function to execute when a specified script is missing or, more technically, not internally registered as requested (to be loaded).  An array of script names will be passed to the first argument of the callback (note that all names will be passed, not only those of the scripts that are not registered yet).
 
 ``` js
 var s  = "http://example.com/myscript.js",
@@ -115,44 +115,32 @@ $script.ready( "myscript", callback )
 
 ``` js
 var myScripts = {
-        "myscript": "https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js",
-        "myscript2": "non_existing_script.js"
+        "jquery": "https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js",
+        "my-jquery-plugins": "http://mysite.com/my-jquery-plugins.js",
+        "my-app-code": "http://mysite.com/my-app-code.js"
     },
     
-    callback = function() {
-       console.log("My scripts are loaded but some may have not been found (404 Network error).");
+    readyCallback = function() {
+       console.log("All my scripts are loaded!!!");
     },
     
-    // If any script failed to load you can try to load all of them again or throw an error
-    errorCallback = function( aNames ) {
-       console.log("errorCallback called");
-       loadMyScripts( myScripts );
-    },
-    
-    // Wrapper function to load scripts with retry/error system
-    loadMyScripts = (function(){
-	var retries = 0;
-	return function( oScripts ){
-	   var i = 0, name, scriptNames = [];  
-	   // If we've tried 2 times to load the scripts and some still fail throw error.
-	   if ( retries > 1 ) {
-	       throw new Error("ERROR: Some script paths/urls are wrong!!");  
-	   }
-	   // Load scripts individually
-	   for ( name in oScripts ) {
-   	       scriptNames[i] = name;
-   	       $script( oScripts[ name ], name );
-	       ++i;
-	   }
-	   // Increment counter of retries
-	   ++retries;
-	   // Attach handler to all my scripts. When all scripts are ready execute callback but
-	   // if any of them fails to load handle the error.
-	   $script.ready( scriptNames, callback, errorCallback);
-	};
-    }());
+    // If any script is missing (not registered yet, but required to be ready), lazy load it now
+    missingCallback = function( names ) {
+       for (var name in myScripts) {
+       	  // Do not worry about duplicate downloads since all scripts that are already loaded 
+       	  // will not be requested or downloaded again.		
+          $script( myScripts[ name ], name ); 
+       }
+    };
 
-loadMyScripts( myScripts );
+// At some point in our code we load 2 out of 3 our scripts
+$script( myScripts["jquery"], "jquery" );
+$script( myScripts["my-jquery-plugins"], "my-jquery-plugins" );
+
+// Let's say at this point I need all 3 of my scripts to be ready. 
+// Since we have not requested to load my third script named "my-app-code", 
+// the 'missingCallback' function will be called
+$script.ready( [ "jquery", "my-jquery-plugins", "my-app-code"  ], readyCallback, missingCallback);    
 ```
 
 
