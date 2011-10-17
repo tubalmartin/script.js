@@ -183,6 +183,28 @@ $script.get('http://example.com/base.js', function () {
 })
 ```
 
+When not to use $script.js
+--------------------------
+
+**document.write()**
+
+Don't use $script.js with scripts that have document.write() in them. At least not yet. document.write() is natively synchronous and thus will break with the asynchronous loading techniques inherent to $script.js. 
+
+**Certain frameworks which have unsafe DOM-ready detection**
+
+There are scripts that do DOM-ready detection, such as jquery.js. Unfortunately, some of these methods for DOM-ready detection are flawed in one specific case -- when the file with the DOM-ready detection loads in a page AFTER the DOM-ready has already happened.  
+They do a bad job of detecting that this is the case in some browsers, and so, wait "forever" thinking they are still waiting for DOM-ready to occur.  
+This means that any code which is queued up waiting for DOM-ready to occur never gets executed.
+
+So, if you load such a script dynamically with $script.js, and you have optimized the rest of your page in such a way that DOM-ready happens before that script gets there, then your page will be left in an uninitialized state because DOM-ready will have passed and will not fire a second time.
+
+jQuery 1.3.2 and below suffers from this problem, as do some others. However, a bug was filed with jQuery about this, and a fix has been put in for jQuery 1.4. So jQuery 1.4+ will be fine to load with $script.js. But 1.3.2 and below should not be loaded with $script.js because of this race condition between script loading and the actual DOM-ready event.
+
+There are two simple fixes to this issue, though:
+* Option 1) Simply load ONLY the jquery.js (1.3.2 and below) script file (or whatever other script that has its own unsafe DOM-ready detection logic in it) manually, using a regular script tag. This will guarantee that its internal DOM-ready detection will occur correctly, since the script tag you load it with will block DOM-ready for it to load first. Once jQuery has registered DOM-ready, all other plugins and blocks of $(document.ready(function(){...}); that queue for the DOM-ready event will work fine, even though you load them with $script.js.
+* Option 2) Place a "bootstrap" script (one that contains $script.js and loads all your scripts) manually, using a regular script tag, just before the closing </body> tag (bottom of body). This way you know that by the time your scripts load, the DOM will be ready.
+
+
 Examples
 --------
 
