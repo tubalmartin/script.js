@@ -7,7 +7,7 @@ Features
 --------
 * Asynchronous & synchronous loading of scripts
 * Flexible dependency management system
-* No conflict mode (like jQuery's)
+* No-conflict mode (like jQuery's)
 * No browser/javascript hacks. This guarantees your website/webapp won't break after browser updates/upgrades.
 * Super lightweight: 1.659 kb minified.
 
@@ -60,9 +60,9 @@ var s  = "http://example.com/myscript.js",
         console.log("scripts loaded!!");   
     };
 
-// Load just one script asynchronously if it's supported, give it a name & 
-// execute my callback function when scripts are ready
-$script( s, "myscript", callback );
+// Load just one script asynchronously if it's supported & give it a name 
+// to identify it in $script.ready(name, callback) calls
+$script( s, "myscript" );
 
 // Load two scripts in one declaration, give the bundle a name &
 // execute my callback function when both scripts are ready
@@ -72,13 +72,74 @@ $script( [s1, s2], "mybundle", callback );
 
 ### $script.ready( names, readyCallback [, errorCallback] )
 
-Description: to-do  
+*Description*   
+- Attaches a handler to "onload" and "onreadystatechange" events for the specified script names.
+- This handler will execute when the specified scripts are loaded.
+- You can have multiple calls to `$script.ready()` for the same dependency (script name).
+- You can call `$script.ready()` anywhere in your code even if a script "name" has not been set yet.
 
-names: A string or an array of strings containing the unique names that identify the scripts.  
-readyCallback: A function to execute when the specified scripts are loaded.  
-errorCallback: A function to execute when some scripts failed to load for some reason. This callback will be passed as argument an array of paths of those scripts that failed to load.  
+*Returns*   
+`$script` object
 
-to-do
+*Arguments*  
+- names: A string or an array of strings containing the unique names that identify the scripts.  
+- readyCallback: A function to execute when the specified scripts are loaded.  
+- errorCallback: A function to execute when any script failed to load for some reason (usually a wrong script path/url causing a 404 Not Found network error). An array of names will be passed to the first argument of the callback (note that all names will be passed, not only those of the scripts that failed to load).
+
+``` js
+var s  = "http://example.com/myscript.js",
+    callback = function() {
+        console.log("scripts loaded!!");   
+    },
+    showLove = function(){
+       console.log("I love $script.js!!");
+    }; 
+
+// Load just one script asynchronously if it's supported & give it a name 
+// to identify it in $script.ready(name, callback) calls
+$script( s, "myscript" );
+
+// When "myscript" is loaded (ready to be used) execute these callbacks 
+$script.ready( "myscript", callback )
+       .ready( "myscript", showLove );
+```       
+
+``` js
+var s1 = "https://example.com/myscript1.js",
+    sE = "non_existing_script.js",
+    callback = function() {
+       console.log("My scripts are loaded but some may have not been found (404 Network error).");
+    },
+    errorCallback = function( aNames ) {
+       // If any script failed to load you can try to load all of them again or throw an error
+       loadMyScripts();
+    },
+    loadMyScripts = (function(oScripts){
+        var retries = 0;
+        return function(){
+           var name;  
+           // If we've tried 2 times to load the scripts and some still fail throw error.
+           if ( retries > 1 ) {
+               throw new Error("ERROR: Some script paths/urls are wrong!!");  
+           }
+           // Load scripts
+           for ( name in oScripts) {
+               $script( oScripts[name], name );
+           }
+           ++retries;
+        };
+    }());
+
+// The script names "myscript1" & "my-non-existing-script" are not set yet but
+// we can attach a handler to them right now.
+$script.ready( [ "myscript1", "my-non-existing-script" ], callback, errorCallback);
+
+// Wrapper function to load scripts with retry/error system
+loadMyScripts({
+    "myscript1": s1,
+    "my-non-existing-script": sE
+});
+```
 
 
 ### $script.get()
