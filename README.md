@@ -133,13 +133,14 @@ var myScripts = {
        }
     };
 
-// At some point in our code we load 2 out of 3 our scripts
+// At some point in our code we load 2 of our 3 scripts
 $script( myScripts["jquery"], "jquery" );
 $script( myScripts["my-jquery-plugins"], "my-jquery-plugins" );
 
-// Let's say at this point I need all 3 of my scripts to be ready. 
-// Since we have not requested to load my third script named "my-app-code", 
-// the 'missingCallback' function will be called
+// Let's say at this point you need all 3 scripts to be ready. 
+// Since we have not requested to load the third script named "my-app-code", 
+// the 'missingCallback' function will be called to lazy load it now 
+// so that your code can keep running :)
 $script.ready( [ "jquery", "my-jquery-plugins", "my-app-code"  ], readyCallback, missingCallback);    
 ```
 
